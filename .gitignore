@@ -1,0 +1,19 @@
+# Ignore the large raw data folder
+Twibot-20/
+*.csv
+
+# Ignore Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Keep the models and scripts
+!bot_detector_model.pkl
+!bot_detector_scaler.pkl
+!*.py
+!*.ipynb
+!README.md
