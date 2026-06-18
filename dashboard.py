@@ -3,6 +3,16 @@ import pandas as pd
 import pickle
 import os
 import plotly.graph_objects as go
+import sklearn._loss
+
+# Professional approach: Custom Unpickler for backward compatibility
+class ModelUnpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        if module == '_loss':
+            module = 'sklearn._loss'
+            if name == 'CyHalfBinomialLoss':
+                name = 'HalfBinomialLoss'
+        return super().find_class(module, name)
 
 # Set page config
 st.set_page_config(page_title="Twitter Bot Detector", layout="wide")
@@ -39,9 +49,9 @@ st.markdown("""
 @st.cache_resource
 def load_model():
     with open('bot_detector_model.pkl', 'rb') as f:
-        model = pickle.load(f)
+        model = ModelUnpickler(f).load()
     with open('bot_detector_scaler.pkl', 'rb') as f:
-        scaler = pickle.load(f)
+        scaler = ModelUnpickler(f).load()
     return model, scaler
 
 try:
