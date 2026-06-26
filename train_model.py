@@ -18,7 +18,10 @@ print("TWITTER BOT DETECTION - FULL DATASET (11,826 users)")
 print("="*55)
 
 # ── Load full dataset ─────────────────────────────────────
-df = pd.read_csv(r'D:\Fake Account Detection in Twitter\twibot_full_features.csv')
+import os
+base_path = os.path.dirname(os.path.abspath(__file__))
+csv_path = os.path.join(base_path, 'twibot_full_features.csv')
+df = pd.read_csv(csv_path)
 df = df.drop(columns=['verified'], errors='ignore')   # remove biased feature
 
 print(f"\nDataset shape : {df.shape}")
@@ -114,9 +117,12 @@ for i, row in imp.head(10).iterrows():
 
 # ── Save best model ───────────────────────────────────────
 best_model = results[best_name]['model']
-with open(r'D:\Fake Account Detection in Twitter\bot_detector_model.pkl', 'wb') as f:
+model_path = os.path.join(base_path, 'bot_detector_model.pkl')
+scaler_path = os.path.join(base_path, 'bot_detector_scaler.pkl')
+
+with open(model_path, 'wb') as f:
     pickle.dump(best_model, f)
-with open(r'D:\Fake Account Detection in Twitter\bot_detector_scaler.pkl', 'wb') as f:
+with open(scaler_path, 'wb') as f:
     pickle.dump(scaler, f)
 
 print(f"\nModel saved: bot_detector_model.pkl")
